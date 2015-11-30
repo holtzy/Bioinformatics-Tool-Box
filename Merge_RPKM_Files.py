@@ -19,7 +19,7 @@ except ImportError:
 
 
 parser = argparse.ArgumentParser(description= 'permet de couper un pfas contig par contig')
-parser.add_argument('-list', required=True, help='list des fichiers contenant les RPKM a merger')
+parser.add_argument('-list', required=True, help='list of RPKM files to merge')
 
 
 args = parser.parse_args()
