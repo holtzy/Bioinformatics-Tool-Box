@@ -7,9 +7,9 @@
 #    SCRIPT PYTHON Nucleotidic_distance_between individuals
 #     				A Partir d'une matrice de SNP, calcule la distance entre accessions.
 #					Les fichiers d'entrées sont :
-#						- matrice de SNP 
+#						- matrice de SNP
 #
-#  					Yan Holtz, yan1166@hotmail.com
+#  					Yan Holtz, yan1166@hotmail.com , Alban Besnard
 #-------------------------------------
 
 
@@ -110,8 +110,12 @@ for i in range(1,nb_indiv):
 							nb_same+=1
 						else:
 							nb_different+=1
-			distance=float(nb_same)/float(nb_same+nb_different)
-			tmp.write("\t"+str(distance))
+			# petit conditionnement si les individus ne sont pas assez couverts (nécessaire si il y a trop peu de marqueurs sur un individus)
+			if float(nb_same+nb_different)!=0 :
+				distance=float(nb_same)/float(nb_same+nb_different)
+				tmp.write("\t"+str(distance))
+			else:
+				tmp.write("\t-")
 
 tmp.write("\n")
 
