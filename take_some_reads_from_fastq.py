@@ -46,28 +46,51 @@ for line in open(liste):
 #------------------------------------------------------------------------------------------------------
 
 #Et je conserve uniquement les contigs présents dans la liste
-tmp=open(output,"w")
 num=3
 
-for line in open(fic):
-	num+=1
-	if num == 4:
-		num=0
-		line=line.strip()
-		if line.startswith("@"):
-			print line
-			contig=line.replace("@","")
-			contig=contig.split()[0]
-		if contig in  seq_to_keep:
-			toprint="yes"
-		else:
-			toprint="no"
+#On traite le cas particulier des .gz (fichiers compressés)
+if '.gz' in fic:
+	with gzip.open(output,"wb") as tmp :
+		for line in gzip.open(fic,'rb'):
+			num+=1
+			if num == 4:
+				num=0
+				line=line.strip()
+				if line.startswith("@"):
+					#print line
+					contig=line.replace("@","")
+					contig=contig.split()[0]
+				if contig in  seq_to_keep:
+					toprint="yes"
+				else:
+					toprint="no"
 		
-	if toprint=="yes":
-		line=line.replace("\n","")
-		tmp.write(line+"\n")
-		
-tmp.close
+			if toprint=="yes":
+				line=line.replace("\n","")
+				tmp.write(line+"\n")
+
+## Les cas d'un fichier fastq simple
+else:
+	tmp=open(output,"w")
+	for line in open(fic):
+		num+=1
+		if num == 4:
+			num=0
+			line=line.strip()
+			if line.startswith("@"):
+				print line
+				contig=line.replace("@","")
+				contig=contig.split()[0]
+			if contig in  seq_to_keep:
+				toprint="yes"
+			else:
+				toprint="no"
+			
+		if toprint=="yes":
+			line=line.replace("\n","")
+			tmp.write(line+"\n")
+			
+	tmp.close
 
 
 

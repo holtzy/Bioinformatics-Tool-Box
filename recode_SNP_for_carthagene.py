@@ -81,8 +81,8 @@ for line in open(SNP):
 		b2=parent2[2]
 	
 	
-	#Dans certains cas, je ne garde pas le SNP : Si les parents sont égaux / si les 2 parents sont manquants / Si les 2 parents sont hétéro
-	if parent1 == parent2 or (a1!=a2 and b1!=b2) :
+	#Dans certains cas, je ne garde pas le SNP : Si les parents sont égaux / si les 2 parents sont manquants / Si les 2 parents sont hétéro / Si un parent est hétéro et l'autre manquant
+	if parent1 == parent2 or (a1!=a2 and b1!=b2) or (parent1=="-" and b1!=b2) or (parent2=="-" and a1!=a2 )  :
 		nb_perdu+=1
 		continue
 		
