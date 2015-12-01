@@ -4,7 +4,7 @@
 
 #-------------------------------------
 #
-#    SCRIPT PYTHON Take_some_contigs_from_ALR_or_Fasta
+#    SCRIPT PYTHON SPLIT_FASTA_BY_CONTIGS
 #     				Prend un fichier fasta ou un fichier alr, et récupère les contigs que l'on place dans une liste.
 #  					Yan Holtz, yan1166@hotmail.com
 #-------------------------------------
@@ -22,33 +22,23 @@ parser = argparse.ArgumentParser(description= 'permet d\'utiliser les infos d\'u
 parser.add_argument('-fic', required=True, help=' fichier fasta ou fichier alr dans lequel on veut récupérer un contig ')
 parser.add_argument('-liste', required=True, help=' liste des contigs à récupérer')
 parser.add_argument('-out', required=True, help=' liste des contigs à récupérer')
+parser.add_argument('-keepOthers', action='store_true', help="if used sequenced not in the list will be kept", default=False)
 
 args = parser.parse_args()
 
 fic=args.fic
 liste=args.liste
 output=args.out
-
-
-
+keepOthers=args.keepOthers
 
 #------------------------------------------------------------------------------------------------------
 
 #Je créé une liste contenant les séquences que je veux garder.
-seq_to_keep=dict()
+seq_to_keep=set()
 for line in open(liste):	
 	line=line.strip()
 	line=line.replace(">","")
-	seq_to_keep[line]=""
-	
-#------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-	
+	seq_to_keep.add(line)
 	
 #------------------------------------------------------------------------------------------------------
 
@@ -59,10 +49,13 @@ for line in open(fic):
 	line=line.strip()
 	if line.startswith(">"):
 		contig=line.replace(">","")
+	toprint="no"
 	if contig in  seq_to_keep:
-		toprint="yes"
+		if keepOthers==False :
+			toprint="yes"
 	else:
-		toprint="no"
+		if keepOthers==True :
+			toprint="yes"
 		
 	if toprint=="yes":
 		tmp.write(line+"\n")
@@ -71,9 +64,7 @@ tmp.close
 
 
 
-print "\n\nOk, c'est gagné, les contigs ont été récupérés !\n\n"
-
-#------------------------------------------------------------------------------------------------------
+print "les contigs ont été récupérés !\n"
 
 
 
