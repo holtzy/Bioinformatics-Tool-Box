@@ -19,7 +19,9 @@ except ImportError:
   print"oops, the import /argparse/ didn't work"
 
 
-parser = argparse.ArgumentParser(description= 'permet d\'utiliser les infos d\'un fichier .alr et d\'un .gen pour détecter des snps.')
+
+
+parser = argparse.ArgumentParser(description= "permet d\'utiliser les infos d\'un fichier .alr et d\'un .gen pour détecter des snps.\n\nOUTPUT (.tsv):\n- Nombre d individus homozygotes\n-Nombre d\'individus hétérozygotes\n-Ho\n-He\n-FIS\n-Nombre d\'individus génotypés pour le SNP\n-Nom du contig\n-Position du SNP dans le contig\n-Couverture ind i\n-génotype ind i et probabilité associée\n")
 parser.add_argument('-alr', required=True, help=' fichier .alr d\'entrée')
 parser.add_argument('-gen', required=True, help=' fichier .gen d\'entrée')
 parser.add_argument('-out', required=True, help='Nom du fichier de sortie contenant les snp attendu')
