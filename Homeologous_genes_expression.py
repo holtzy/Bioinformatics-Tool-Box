@@ -334,7 +334,7 @@ for line in open(alr) :
 				liste_des_comptes2=  [float(z)/len(liste) for z in liste_des_comptes] 
 
 				#Je pondère chaque élément de la liste par le nbr de reads total et je multiplie par 1 million
-				for i in range(0,177):
+				for i in range(0,len(nbr_reads_tot)):
 					liste_des_comptes2[i]=float(liste_des_comptes2[i])*1000000 / float(nbr_reads_tot[i])
 				
 				toprint=str(contig)
@@ -351,12 +351,11 @@ for line in open(alr) :
 		
 		contig=line.replace(">","")
 		contig=contig.split("|")[0]
-		print contig
 		
 		#Je réinitialise
 		num_ligne=-1
 		liste_des_comptes=list()
-		for i in range(0,177):
+		for i in range(0,len(nbr_reads_tot)):
 			liste_des_comptes.append(0)
 		
 		#Je récupère la liste des sites à récupérer
