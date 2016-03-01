@@ -41,7 +41,7 @@ calculate_neighbour=function(input,col_cadrillage,col_analyse){
 
 	# Récupération des informations concernant le cadrillage. (Je transforme le format A,B,C... en 1,2,3... :
 	X=as.character(lapply(input[,col_cadrillage] , fun_x))
-	X=match(X, unique(X))
+	X=match(X, sort(unique(X)))
 	Y=as.numeric(lapply(input[,col_cadrillage] , fun_y))
 	
 	#Je créé une fonction qui va récupérer la valeur des voisins et calculer leur moyenne pour une ligne de input donnée

@@ -28,6 +28,7 @@ represent_field=function(input, col_cadrillage, col_analyse , col_text){
 	#column col_text is optionnal, check if it's filled or not
 	if(missing(col_text)==T){col_text=NA}
 
+
 	#J'impose la nature de mes colonnes d'intérêts
 	input[,col_cadrillage]=as.character(input[,col_cadrillage])
 	input[,col_analyse]=as.numeric(as.character(input[,col_analyse]))	
@@ -38,7 +39,7 @@ represent_field=function(input, col_cadrillage, col_analyse , col_text){
 
 	# Récupération des informations concernant le cadrillage. (Je transforme le format A,B,C... en 1,2,3... + je retourne le vecteur pour que le 1 soit en haut (par défault la fonction levelplot me met le A en bas...)) :
 	X=as.character(lapply(input[,col_cadrillage] , fun_x))
-	X=match(X, unique(X))
+	X=match(X, sort(unique(X)))
 	X=max(X)-X+1
 	Y=as.numeric(lapply(input[,col_cadrillage] , fun_y))
 	
@@ -50,7 +51,7 @@ represent_field=function(input, col_cadrillage, col_analyse , col_text){
     	}
 	
 	#Make the plot !!!
-	levelplot(input[,col_analyse] ~ Y * X , main=paste("representation of ",colnames(input)[col_analyse], sep="") , panel = myPanel , col.regions = heat.colors(100)[length(heat.colors(100)):1] , scales=list( y=list(at=seq(1:10), labels=letters[10:1]) , x=list(at=seq(1:10), labels=seq(1:10)) ) )
+	levelplot(input[,col_analyse] ~ Y * X , main=paste("representation of ",colnames(input)[col_analyse], sep="") , panel = myPanel , col.regions = heat.colors(100)[length(heat.colors(100)):1] , scales=list( y=list(at=seq(1:max(X,na.rm=T)), labels=letters[max(X,na.rm=T):1]) , x=list(at=seq(1:max(Y,na.rm=T)), labels=seq(1:max(Y,na.rm=T))) ) )
 	}
 #---------------------------------------------------------------------#
 
