@@ -92,6 +92,7 @@ def count_chrossing(indiv):
 	chromo_mem="-"
 	to_print=header[indiv]
 	num=0
+	double_cross=0
 	
 	for line in open(fic_in):
 		
@@ -105,13 +106,24 @@ def count_chrossing(indiv):
 			chromo=line[1]
 			allele=line[indiv]
 			
-			#Si j'ai un changement d'allele, alors je marque un point a nb cross
-			if allele != allele_mem and allele_mem!="-" and allele!="-":
-				nb_cross+=1
+			#Si c'est un allele manquant, je passe a la ligne d'après !
+			if allele=="-":
+				continue
 			
-			# Si je ne suis pas sur un allele manquant, j'actualise mon allele memoire
-			if allele!="-":
-				allele_mem=allele
+			#Si j'ai un changement d'allele, alors je marque un point a nb cross. et double cross vaut 1. Sinon, je réinitiailise double cross
+			if allele != allele_mem and allele_mem!="-":
+				nb_cross+=1
+				double_cross+=1
+			else:
+				double_cross=0
+
+			#Si j'ai un double crossing over, la variable double cross vaut 2. Dans ce cas la je retranche 2 points à nb_cross, car je ne veux pas compter les doubles cross !
+			if double_cross==2:
+				nb_cross=nb_cross-2
+				double_cross=0
+			
+			# j'actualise mon allele memoire
+			allele_mem=allele
 		
 			#Si je passe a un autre chromo, j'inscrit le nbr de crossing over dans toprint, et je remet le nbr de chross a 0
 			if chromo_mem != chromo and chromo_mem !="-":
