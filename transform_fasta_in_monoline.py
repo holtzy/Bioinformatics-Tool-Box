@@ -19,11 +19,11 @@ except ImportError:
 
 
 parser = argparse.ArgumentParser(description= '\n\nTake a Fasta file. If sequences of a contig are split in several lines, it will paste them in one line\n\n')
-parser.add_argument('-in', required=True, help=' Fasta input ')
+parser.add_argument('-input', required=True, help=' Fasta input ')
 
 args = parser.parse_args()
 
-fic1=args.in
+fic1=args.input
 
 
 
