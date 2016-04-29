@@ -51,7 +51,7 @@ represent_field=function(input, col_cadrillage, col_analyse , col_text){
     	}
 	
 	#Make the plot !!!
-	levelplot(input[,col_analyse] ~ Y * X , main=paste("representation of ",colnames(input)[col_analyse], sep="") , panel = myPanel , col.regions = heat.colors(100)[length(heat.colors(100)):1] , scales=list( y=list(at=seq(1:max(X,na.rm=T)), labels=letters[max(X,na.rm=T):1]) , x=list(at=seq(1:max(Y,na.rm=T)), labels=seq(1:max(Y,na.rm=T))) ) )
+	levelplot(input[,col_analyse] ~ Y * X , main="" , panel = myPanel , col.regions = heat.colors(100)[length(heat.colors(100)):1] , scales=list( y=list(at=seq(1:max(X,na.rm=T)), labels=letters[max(X,na.rm=T):1]) , x=list(at=seq(1:max(Y,na.rm=T)), labels=seq(1:max(Y,na.rm=T))) ) )
 	}
 #---------------------------------------------------------------------#
 
