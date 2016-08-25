@@ -23,12 +23,14 @@ except ImportError:
 parser = argparse.ArgumentParser(description= '\n\nCe script permet de mettre les SNPs au format fasta avec des [] au niveau des SNPs\n\n')
 parser.add_argument('-fasta', required=True, help='	fasta de EPO')
 parser.add_argument('-SNP', required=True, help='	fichier de SNP')
+parser.add_argument('-format', required=True, help=' format des SNPs? 1=fichier de SNP complet. 2=juste 3 colonnes: nom du SNP, allele1, allele2')
 parser.add_argument('-out', required=True, help='	fichier de sortie')
 
 
 args = parser.parse_args()
 fasta=args.fasta
 SNP=args.SNP
+format=args.format
 output=args.out
 
 
@@ -46,40 +48,62 @@ tmp=open(output,"w")
 dico_SNP=dict()
 
 
-for line in open(SNP):
-	nombre=nombre+1
-	line=line.strip()
-	line=line.split()
-	contig=line[6].replace(">","")
-	if contig.startswith("Traes"):
-		contig=contig.split("|")[0]
-	position=int(line[7]) 
-	SNP_name=contig+"@"+str(position)
-	
-	#Maintenant il va falloir récupérer les 2 allèles du SNP... pas facile.
-	allele1=""
-	allele2=""
-	first = "yes"
-	for i in range(9,len(line),2):
-		all=line[i][0]
-		if all == "-" :
-			continue
-		if first == "yes" :
-			allele1=all
-			first="no"
-		if all != allele1 :
-			allele2=all
-	
-	to_add=	str(position)+"\t"+allele1+"\t"+allele2
-	if contig not in dico_SNP:
-		dico_SNP[contig]=list()
-	dico_SNP[contig].append(to_add)
+# If the user give a classeic format of SNP
+if format=="1":
+	for line in open(SNP):
+		nombre=nombre+1
+		line=line.strip()
+		line=line.split()
+		contig=line[6].replace(">","")
+		if contig.startswith("Traes"):
+			contig=contig.split("|")[0]
+		position=int(line[7]) 
+		SNP_name=contig+"@"+str(position)
+		
+		#Maintenant il va falloir récupérer les 2 allèles du SNP... pas facile.
+		allele1=""
+		allele2=""
+		first = "yes"
+		for i in range(9,len(line),2):
+			all=line[i][0]
+			if all == "-" :
+				continue
+			if first == "yes" :
+				allele1=all
+				first="no"
+			if all != allele1 :
+				allele2=all
+		
+		to_add=	str(position)+"\t"+allele1+"\t"+allele2
+		if contig not in dico_SNP:
+			dico_SNP[contig]=list()
+		dico_SNP[contig].append(to_add)
+		
+	print "nbr de SNPs détectés = "+str(nombre)
 	
 
-print "nbr de SNPs détectés = "+str(nombre)
-	
-	
-	
+# if the user gives only 3 columns
+if format=="2":
+	for line in open(SNP):
+		nombre=nombre+1
+		line=line.strip()
+		line=line.split()
+		SNP_name=line[0].replace(">","")
+		contig=SNP_name.split("@")[0]
+		position=SNP_name.split("@")[1]
+		if contig.startswith("Traes"):
+			contig=contig.split("|")[0]
+		
+		# Récupération des 2 allèles du SNP
+		allele1=line[1]
+		allele2=line[2]
+		
+		to_add=	str(position)+"\t"+allele1+"\t"+allele2
+		if contig not in dico_SNP:
+			dico_SNP[contig]=list()
+		dico_SNP[contig].append(to_add)
+		
+	print "nbr de SNPs détectés = "+str(nombre)
 	
 	
 
